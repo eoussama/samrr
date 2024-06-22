@@ -5,8 +5,6 @@ description = "Steam Achivement Manager Rust Rewrite"
 authors = ["eoussama"]
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [build-dependencies]
 tauri-build = { version = "1", features = [] }
 
@@ -14,6 +12,8 @@ tauri-build = { version = "1", features = [] }
 tauri = { version = "1", features = ["shell-open"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
+winreg = "0.52.0"
+libloading = "0.8.3"
 
 [features]
 # This feature is used for production builds or when a dev server is not specified, DO NOT REMOVE!!
