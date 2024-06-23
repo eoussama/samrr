@@ -1,4 +1,7 @@
 {
+  "[rust]": {
+    "editor.tabSize": 4
+  },
   "rust-analyzer.linkedProjects": [
     "./src/core/Cargo.toml"
   ]

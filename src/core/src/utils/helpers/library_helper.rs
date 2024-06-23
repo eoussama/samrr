@@ -1,7 +1,7 @@
-use std::io::{Error, ErrorKind};
+use libloading::Library;
 use std::path::Path;
 
-use libloading::Library;
+use super::super::enums::error_enum::Error;
 
 fn set_sources(path: &Path) {
     let path_bin = path.join("bin");
@@ -16,12 +16,5 @@ pub fn load(path: String, name: &str) -> Result<Library, Error> {
 
     set_sources(&root_path);
 
-    unsafe {
-        Library::new(lib_path).map_err(|_| {
-            Error::new(
-                ErrorKind::NotFound,
-                format!("Failed to read Steam installation path"),
-            )
-        })
-    }
+    unsafe { Library::new(lib_path).map_err(|_| -> Error { Error::LibraryNotFound }) }
 }
