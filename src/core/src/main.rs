@@ -1,7 +1,13 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use tauri::Manager;
-mod utils;
+
+mod client;
+mod env;
+mod error;
+mod library;
+mod path;
+mod steam;
 
 #[tauri::command]
 fn ping(value: &str) -> String {
@@ -12,27 +18,21 @@ fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![ping])
         .setup(|app| {
-            let window = app.get_window("main").unwrap();
-
-            match utils::helpers::client_helper::init() {
+            match client::init() {
                 Ok(true) => {
                     println!("Steam is installed.");
-                    window.emit("success", "Steam is installed.").unwrap()
+                    app.emit_all("success", "Steam is installed.").unwrap()
                 }
 
                 Ok(false) => {
                     println!("Steam is not installed.");
-                    window
-                        .emit(
-                            "error",
-                            utils::enums::error_enum::Error::SteamNotInstalled.to_string(),
-                        )
+                    app.emit_all("error", error::Error::SteamNotInstalled.to_string())
                         .unwrap()
                 }
 
                 Err(e) => {
                     println!("[Error] {:?}", e);
-                    window.emit("error", e.to_string()).unwrap()
+                    app.emit_all("error", e.to_string()).unwrap()
                 }
             }
 
