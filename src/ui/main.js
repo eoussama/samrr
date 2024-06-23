@@ -1,4 +1,5 @@
 const { invoke } = window.__TAURI__.tauri;
+const { listen } = window.__TAURI__.event;
 
 let testInputEl;
 let testMsgEl;
@@ -16,3 +17,17 @@ window.addEventListener("DOMContentLoaded", () => {
     test();
   });
 });
+
+function setupListener() {
+  console.log('listened')
+
+  listen('success', (event) => {
+    console.log(event.payload); // Should print: Hello from Rust!
+  });
+
+  listen('error', (event) => {
+    console.error(event.payload); // Should print: Hello from Rust!
+  });
+}
+
+setupListener();
