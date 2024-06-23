@@ -1,26 +1,27 @@
-use std::env;
+use std::io::{Error, ErrorKind};
 use std::path::Path;
 
 use libloading::Library;
 
-pub fn load_library(dir_path: &str, dll_name: &str) -> Result<Library, libloading::Error> {
-    let bin_path = Path::new(dir_path).join("bin");
+fn set_sources(path: &Path) {
+    let path_bin = path.join("bin");
 
-    if let Some(mut current_path) = env::var_os("PATH") {
-        current_path.push(";");
-        current_path.push(r"D:\games\Steam");
-        current_path.push(";");
-        current_path.push(r"D:\games\Steam\bin");
-        env::set_var("PATH", current_path);
+    super::env_helper::set_path(path);
+    super::env_helper::set_path(&path_bin);
+}
 
-        match env::var_os("PATH") {
-            Some(value) => println!("current_path = {:?}", value),
-            None => println!("current_path err"),
-        }
+pub fn load(path: String, name: &str) -> Result<Library, Error> {
+    let root_path = super::path_helper::normalize(path)?;
+    let lib_path = root_path.join(name);
+
+    set_sources(&root_path);
+
+    unsafe {
+        Library::new(lib_path).map_err(|_| {
+            Error::new(
+                ErrorKind::NotFound,
+                format!("Failed to read Steam installation path"),
+            )
+        })
     }
-
-    let path_str = String::from(dir_path) + "/" + dll_name;
-
-    println!("path_str = {:?}", path_str);
-    unsafe { Library::new(r"D:\games\Steam\steamclient64.dll") }
 }

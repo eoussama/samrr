@@ -4,7 +4,7 @@ use winreg::{enums::HKEY_CURRENT_USER, RegKey};
 pub fn get_steam_path() -> Result<String, Error> {
     let hkey = RegKey::predef(HKEY_CURRENT_USER);
 
-    let steam_key = hkey.open_subkey("Software\\Valve\\Steam").map_err(|_| {
+    let steam_key = hkey.open_subkey(r"Software\Valve\Steam").map_err(|_| {
         Error::new(
             ErrorKind::NotFound,
             format!("Failed to open Steam registry key"),
@@ -27,7 +27,7 @@ pub fn is_steam_installed() -> Result<bool, Error> {
 
     // unsafe {
 
-    let lib = super::library_helper::load_library(&path, dll_name);
+    let lib = super::library_helper::load(path, dll_name);
     println!("lib {:?}", lib);
     // let func: libloading::Symbol<unsafe extern fn(&str, u32) -> u32> = lib.get(b"CreateInterface").unwrap();
 
