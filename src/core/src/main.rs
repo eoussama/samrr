@@ -1,87 +1,15 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use libloading::Library;
 use std::io;
 use std::u32;
-use winreg::enums::*;
-use winreg::RegKey;
 
 use std::env;
-use std::ffi::OsStr;
-use std::path::{Path, PathBuf};
+
+mod utils;
 
 #[tauri::command]
 fn test(value: &str) -> String {
     format!("Received value '{}' by Rust!", value)
-}
-
-fn get_steam_path() -> Result<String, io::Error> {
-    let hkey = RegKey::predef(HKEY_CURRENT_USER);
-
-    let steam_key = hkey.open_subkey("Software\\Valve\\Steam").map_err(|_| {
-        io::Error::new(
-            io::ErrorKind::NotFound,
-            format!("Failed to open Steam registry key"),
-        )
-    })?;
-
-    let steam_path = steam_key.get_value("SteamPath").map_err(|_| {
-        io::Error::new(
-            io::ErrorKind::NotFound,
-            format!("Failed to read Steam installation path"),
-        )
-    });
-
-    steam_path
-}
-
-fn load_library(dir_path: &str, dll_name: &str) -> Result<Library, libloading::Error> {
-    // let mut path = PathBuf::from(dir_path);
-    // path.push(dll_name);
-    // let path_str: &OsStr = path.as_os_str();
-
-    // unsafe {
-    //     Library::new(path_str)
-    // }
-
-    let bin_path = Path::new(dir_path).join("bin");
-
-    if let Some(mut current_path) = env::var_os("PATH") {
-        current_path.push(";");
-        current_path.push(r"D:\games\Steam");
-		current_path.push(";");
-		current_path.push(r"D:\games\Steam\bin");
-        env::set_var("PATH", current_path);
-
-        match env::var_os("PATH") {
-            Some(value) => println!("current_path = {:?}", value),
-            None => println!("current_path err"),
-        }
-    }
-
-    let path_str = String::from(dir_path) + "/" + dll_name;
-
-    println!("path_str = {:?}", path_str);
-    unsafe { Library::new(r"D:\games\Steam\steamclient64.dll") }
-}
-
-fn is_steam_installed() -> Result<bool, io::Error> {
-    let path = get_steam_path()?;
-    let dll_name = "steamclient.dll";
-
-    // unsafe {
-
-    let lib = load_library(&path, dll_name);
-    println!("lib {:?}", lib);
-    // let func: libloading::Symbol<unsafe extern fn(&str, u32) -> u32> = lib.get(b"CreateInterface").unwrap();
-
-    // let result = func("SteamClient019", 0);
-
-    // println!("result = {:?}", result);
-
-    // }
-
-    Ok(true)
 }
 
 fn is_steam_running() -> bool {
@@ -124,7 +52,7 @@ fn load_game(id: u32) -> () {
 fn main() {
     println!("Starting Samrr...");
 
-    match is_steam_installed() {
+    match utils::helpers::steam_helper::is_steam_installed() {
         Ok(installed) => {
             if !installed {
                 io::Error::new(
