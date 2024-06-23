@@ -20,14 +20,14 @@ fn get_path() -> Result<String, Error> {
     steam_path
 }
 
-fn is_installed() -> Result<bool, Error> {
+pub fn is_installed() -> Result<bool, Error> {
     let lib_path = get_path()?;
     let exists = Path::new(&lib_path).exists();
 
     Ok(exists)
 }
 
-fn load_client() -> Result<Library, Error> {
+pub fn load_client() -> Result<Library, Error> {
     let lib_path = get_path()?;
     let lib_name = "steamclient64.dll";
 
@@ -40,23 +40,4 @@ fn load_client() -> Result<Library, Error> {
     // let result = func("SteamClient019", 0);
     // println!("result = {:?}", result);
     // }
-}
-
-pub fn init() -> Result<bool, Error> {
-    println!("Initializing Samrr...");
-
-    match is_installed() {
-        Ok(true) => (),
-        Ok(false) => {
-            return Err(Error::SteamNotInstalled);
-        }
-        Err(e) => {
-            return Err(e);
-        }
-    }
-
-    let client = load_client();
-    println!("client = {:?}", client);
-
-    Ok(true)
 }
