@@ -1,7 +1,7 @@
 {
   "build": {
-    "devPath": "../src",
-    "distDir": "../src",
+    "devPath": "../ui",
+    "distDir": "../ui",
     "withGlobalTauri": true
   },
   "package": {

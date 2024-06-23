@@ -62,7 +62,7 @@ fn load_library(dir_path: &str, dll_name: &str) -> Result<Library, libloading::E
     let path_str = String::from(dir_path) + "/" + dll_name;
 
     println!("path_str = {:?}", path_str);
-    unsafe { Library::new(r"D:\games\Steam\steamclient.dll") }
+    unsafe { Library::new(r"D:\games\Steam\steamclient64.dll") }
 }
 
 fn is_steam_installed() -> Result<bool, io::Error> {
