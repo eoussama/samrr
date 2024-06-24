@@ -1,6 +1,6 @@
 use std::path::Path;
 
-use libloading::Library;
+use libloading::{Library, Symbol};
 
 use super::env;
 use super::error;
@@ -20,4 +20,8 @@ pub fn load(path: String, name: &str) -> Result<Library, error::Error> {
     set_sources(&root_path);
 
     unsafe { Library::new(lib_path).map_err(|_| error::Error::LibraryNotFound) }
+}
+
+pub fn export<'a, T>(lib: &'a Library, symbol: &'a [u8]) -> Result<Symbol<'a, T>, error::Error> {
+    unsafe { lib.get(symbol).map_err(|_| error::Error::FunctionNotFound) }
 }
