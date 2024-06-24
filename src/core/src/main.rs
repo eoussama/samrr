@@ -3,6 +3,7 @@
 use tauri::Manager;
 
 mod client;
+mod core;
 mod env;
 mod error;
 mod library;
@@ -18,7 +19,7 @@ fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![ping])
         .setup(|app| {
-            match client::init() {
+            match core::init() {
                 Ok(true) => {
                     println!("Steam is installed.");
                     app.emit_all("success", "Steam is installed.").unwrap()
