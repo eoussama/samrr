@@ -5,7 +5,9 @@ pub enum Error {
     SteamNotInstalled,
     SteamNotRunning,
     SteamUserNotConnected,
+    ClientNotInitialized,
     LibraryNotFound,
+    FunctionNotFound,
     Other(String),
 }
 
@@ -22,6 +24,8 @@ impl fmt::Display for Error {
                 write!(output, "could not detect any users connected to Steam")
             }
             Error::LibraryNotFound => write!(output, "could not locate library"),
+            Error::FunctionNotFound => write!(output, "could not export function"),
+            Error::ClientNotInitialized => write!(output, "could not initialize the client"),
             Error::Other(msg) => write!(output, "something went wrong, {}", msg),
         }
     }
