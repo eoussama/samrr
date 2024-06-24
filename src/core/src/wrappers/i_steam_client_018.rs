@@ -16,12 +16,13 @@ struct SteamClient018 {
 #[repr(C)]
 struct SteamClient018VTable {
     create_steam_pipe: unsafe extern "C" fn() -> HSteamPipe,
-    connect_to_global_user: unsafe extern "C" fn(pipe: HSteamPipe) -> HSteamUser,
-    get_steam_user_interface: unsafe extern "C" fn(
-        user: HSteamUser,
-        pipe: HSteamPipe,
-        interface_name: c_char,
-    ) -> *mut c_void,
+    b_release_steam_pipe: unsafe extern "C" fn(HSteamPipe) -> bool,
+    connect_to_global_user: unsafe extern "C" fn(HSteamPipe) -> HSteamUser,
+    // get_steam_user_interface: unsafe extern "C" fn(
+    //     user: HSteamUser,
+    //     pipe: HSteamPipe,
+    //     interface_name: c_char,
+    // ) -> *mut c_void,
 }
 
 struct ISteamClient;
@@ -58,23 +59,20 @@ struct ISteamClient;
 
 pub fn init(lib: &Library) -> Result<(), error::Error> {
     let i_steam_client_018_ptr = interface::create::<ISteamClient>(lib, "SteamClient018")?;
+    println!("[i_steam_client_018_ptr] {:?}", i_steam_client_018_ptr);
 
     unsafe {
         let steam_client_018 = &*(i_steam_client_018_ptr as *const SteamClient018);
-        let create_steam_pipe = (*steam_client_018.vtable).create_steam_pipe;
-        let connect_to_global_user = (*steam_client_018.vtable).connect_to_global_user;
 
-        println!("[i_steam_client_018_ptr] {:?}", i_steam_client_018_ptr);
-        println!(
-            "[create_steam_pipe] {:?} = {:?}",
-            create_steam_pipe,
-            create_steam_pipe()
-        );
-        println!(
-            "[connect_to_global_user] {:?} = {:?}",
-            connect_to_global_user,
-            connect_to_global_user(create_steam_pipe())
-        );
+        let create_steam_pipe = (*steam_client_018.vtable).create_steam_pipe;
+        let pipe = create_steam_pipe();
+        println!("[create_steam_pipe] {:?}", create_steam_pipe);
+        println!("[pipe] {:?}", pipe);
+
+        let connect_to_global_user = (*steam_client_018.vtable).connect_to_global_user;
+        let user = connect_to_global_user(pipe);
+        println!("[connect_to_global_user] {:?}", connect_to_global_user);
+        println!("[user] {:?}", user);
     }
 
     Ok(())

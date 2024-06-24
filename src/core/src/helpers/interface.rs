@@ -17,9 +17,11 @@ fn export_create_interface<T>(lib: &Library) -> Result<Symbol<CreateInterfaceFn<
 
 pub fn create<T>(lib: &Library, version: &str) -> Result<*mut T, error::Error> {
     let create_interface = export_create_interface::<T>(lib)?;
+    println!("[create_interface] {:?}", create_interface);
 
     let interface_name = CString::new(version).unwrap();
-    let interface_ptr = unsafe { create_interface(interface_name.as_ptr() as c_char, std::ptr::null_mut()) };
+    let interface_ptr =
+        unsafe { create_interface(interface_name.as_ptr() as c_char, std::ptr::null_mut()) };
 
     Ok(interface_ptr)
 }
