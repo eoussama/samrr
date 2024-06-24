@@ -2,14 +2,10 @@
 
 use tauri::Manager;
 
-mod client;
 mod core;
-mod env;
-mod error;
-mod interface;
-mod library;
-mod path;
-mod steam;
+mod helpers;
+mod utils;
+mod wrappers;
 
 #[tauri::command]
 fn ping(value: &str) -> String {
@@ -28,7 +24,7 @@ fn main() {
 
                 Ok(false) => {
                     println!("Steam is not installed.");
-                    app.emit_all("error", error::Error::SteamNotInstalled.to_string())
+                    app.emit_all("error", utils::error::Error::SteamNotInstalled.to_string())
                         .unwrap()
                 }
 

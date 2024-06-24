@@ -2,7 +2,7 @@ use std::path::Path;
 
 use winreg::{enums::HKEY_CURRENT_USER, RegKey};
 
-use super::error;
+use crate::utils::error;
 
 pub fn get_path() -> Result<String, error::Error> {
     let hkey = RegKey::predef(HKEY_CURRENT_USER);

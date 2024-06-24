@@ -1,9 +1,9 @@
 use libloading::Library;
 
-use super::error;
-use super::interface;
-use super::library;
-use super::steam;
+use crate::helpers::interface;
+use crate::helpers::library;
+use crate::helpers::steam;
+use crate::utils::error;
 
 fn load_steam_client() -> Result<Library, error::Error> {
     let lib_path = steam::get_path()?;
@@ -17,7 +17,6 @@ fn load_steam_client() -> Result<Library, error::Error> {
 pub fn load() -> Result<bool, error::Error> {
     let lib = load_steam_client()?;
     let steam_client = interface::export_i_steam_client_018(&lib);
-
 
     // let get_isteam_user = (*steam_client_018.vtable).get_steam_user_interface;
 

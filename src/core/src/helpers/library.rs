@@ -2,9 +2,9 @@ use std::path::Path;
 
 use libloading::{Library, Symbol};
 
-use super::env;
-use super::error;
-use super::path;
+use crate::utils::env;
+use crate::utils::error;
+use crate::utils::path;
 
 fn set_sources(path: &Path) {
     let path_bin = path.join("bin");

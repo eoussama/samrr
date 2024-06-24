@@ -3,9 +3,8 @@ use std::os::raw::{c_char, c_void};
 
 use libloading::{Library, Symbol};
 
-use crate::library;
-
-use super::error;
+use crate::helpers::library;
+use crate::utils::error;
 
 type HSteamPipe = i32;
 type HSteamUser = i32;
@@ -83,8 +82,16 @@ pub fn export_i_steam_client_018(lib: &Library) -> Result<(), error::Error> {
         let connect_to_global_user = (*steam_client_018.vtable).connect_to_global_user;
 
         println!("[i_steam_client_018_ptr] {:?}", i_steam_client_018_ptr);
-        println!("[create_steam_pipe] {:?} = {:?}", create_steam_pipe, create_steam_pipe());
-        println!("[connect_to_global_user] {:?} = {:?}", connect_to_global_user, connect_to_global_user(create_steam_pipe()));
+        println!(
+            "[create_steam_pipe] {:?} = {:?}",
+            create_steam_pipe,
+            create_steam_pipe()
+        );
+        println!(
+            "[connect_to_global_user] {:?} = {:?}",
+            connect_to_global_user,
+            connect_to_global_user(create_steam_pipe())
+        );
     }
 
     Ok(())
