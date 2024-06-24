@@ -6,6 +6,7 @@ mod client;
 mod core;
 mod env;
 mod error;
+mod interface;
 mod library;
 mod path;
 mod steam;
