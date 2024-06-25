@@ -1,5 +1,5 @@
 use std::ffi::CString;
-use std::os::raw::{c_char, c_void};
+use std::os::raw::c_char;
 
 use libloading::Library;
 
@@ -97,6 +97,34 @@ pub fn init(lib: &Library) -> Result<(), error::Error> {
             get_i_steam_user(user, pipe, steam_user_012_name.as_ptr() as *const c_char);
         println!("[get_i_steam_user] {:?}", get_i_steam_user);
         println!("[steam_user_012] {:?}", steam_user_012);
+
+        // // Get ISteamUser interface
+        // let steam_user_012_name = CString::new("SteamUser012").unwrap();
+        // println!("steam_user_012_name = {:?}", steam_user_012_name);
+
+        // let steam_user_012_ptr = get_isteam_user(
+        //     steam_user_handle,
+        //     steam_pipe_handle,
+        //     steam_user_012_name.as_ptr() as c_char,
+        // );
+        // println!("steam_user_012_ptr = {:?}", steam_user_012_ptr);
+
+        // if steam_user_012_ptr.is_null() {
+        //     panic!("[Error] Could not get ISteamUser interface");
+        // }
+
+        // let steam_user = &*(steam_user_012_ptr as *const ISteamUser);
+        // let get_persona_name = (*steam_user.vtable).GetPersonaName;
+
+        // // Fetch the user name
+        // let persona_name_ptr = get_persona_name(steam_user as *const _ as *mut _);
+        // let persona_name = CStr::from_ptr(persona_name_ptr).to_str().unwrap();
+
+        // println!("Steam user name: {}", persona_name);
+
+        // let create_interface: Symbol<
+        //     unsafe extern "C" fn(version: *const i8, _arg: *mut std::ffi::c_void) -> *mut ISteamClient,
+        // >;
     }
 
     Ok(())

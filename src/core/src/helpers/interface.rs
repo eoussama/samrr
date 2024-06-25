@@ -17,7 +17,6 @@ fn export_create_interface<T>(lib: &Library) -> Result<Symbol<CreateInterfaceFn<
 
 pub fn create<T>(lib: &Library, version: &str) -> Result<*mut T, error::Error> {
     let create_interface = export_create_interface::<T>(lib)?;
-    println!("[create_interface] {:?}", create_interface);
 
     let interface_name = CString::new(version).unwrap();
     let interface_ptr =
