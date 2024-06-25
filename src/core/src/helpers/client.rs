@@ -1,6 +1,5 @@
 use libloading::Library;
 
-use crate::helpers::interface;
 use crate::helpers::library;
 use crate::helpers::steam;
 use crate::utils::error;
@@ -18,8 +17,6 @@ fn load_steam_client() -> Result<Library, error::Error> {
 pub fn load() -> Result<bool, error::Error> {
     let lib = load_steam_client()?;
     let steam_client = i_steam_client_018::init(&lib);
-
-    // let get_isteam_user = (*steam_client_018.vtable).get_steam_user_interface;
 
     // // Create a Steam pipe
     // let steam_pipe_handle = create_steam_pipe();
