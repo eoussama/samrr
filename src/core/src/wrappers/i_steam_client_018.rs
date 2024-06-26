@@ -39,7 +39,6 @@ struct SteamClient018VTable {
     release_user: unsafe extern "C" fn(HSteamPipe, HSteamUser),
     get_i_steam_user:
         unsafe extern "C" fn(HSteamUser, HSteamPipe, *const c_char) -> *const ISteamUserVTable,
-    // get_i_steam_user: unsafe extern "C" fn(HSteamUser, HSteamPipe, *const c_char) -> *mut c_void,
 }
 
 struct ISteamClient;
@@ -76,38 +75,38 @@ struct ISteamUserVTable {
 
 pub fn init(lib: &Library) -> Result<(), error::Error> {
     let i_steam_client_018_ptr = interface::create::<ISteamClient>(lib, "SteamClient018")?;
-    println!("[i_steam_client_018_ptr] {:?}", i_steam_client_018_ptr);
+    dbg!(i_steam_client_018_ptr);
 
     unsafe {
         let steam_client_018 = &*(i_steam_client_018_ptr as *const SteamClient018);
 
         let create_steam_pipe = (*steam_client_018.vtable).create_steam_pipe;
         let pipe = create_steam_pipe();
-        println!("[create_steam_pipe] {:?}", create_steam_pipe);
-        println!("[pipe] {:?}", pipe);
+        dbg!(create_steam_pipe);
+        dbg!(pipe);
 
         let connect_to_global_user = (*steam_client_018.vtable).connect_to_global_user;
         let user = connect_to_global_user(pipe);
-        println!("[connect_to_global_user] {:?}", connect_to_global_user);
-        println!("[user] {:?}", user);
+        dbg!(connect_to_global_user);
+        dbg!(user);
 
         let steam_user_012_name = CString::new("SteamUser012").unwrap();
         let get_i_steam_user = (*steam_client_018.vtable).get_i_steam_user;
         let steam_user_012 =
             get_i_steam_user(user, pipe, steam_user_012_name.as_ptr() as *const c_char);
-        println!("[get_i_steam_user] {:?}", get_i_steam_user);
-        println!("[steam_user_012] {:?}", steam_user_012);
+        dbg!(get_i_steam_user);
+        dbg!(steam_user_012);
 
         // // Get ISteamUser interface
         // let steam_user_012_name = CString::new("SteamUser012").unwrap();
-        // println!("steam_user_012_name = {:?}", steam_user_012_name);
+        // dbg!(steam_user_012_name);
 
         // let steam_user_012_ptr = get_isteam_user(
         //     steam_user_handle,
         //     steam_pipe_handle,
         //     steam_user_012_name.as_ptr() as c_char,
         // );
-        // println!("steam_user_012_ptr = {:?}", steam_user_012_ptr);
+        // dbg!(steam_user_012_ptr);
 
         // if steam_user_012_ptr.is_null() {
         //     panic!("[Error] Could not get ISteamUser interface");
@@ -120,7 +119,7 @@ pub fn init(lib: &Library) -> Result<(), error::Error> {
         // let persona_name_ptr = get_persona_name(steam_user as *const _ as *mut _);
         // let persona_name = CStr::from_ptr(persona_name_ptr).to_str().unwrap();
 
-        // println!("Steam user name: {}", persona_name);
+        // dbg!(persona_name);
 
         // let create_interface: Symbol<
         //     unsafe extern "C" fn(version: *const i8, _arg: *mut std::ffi::c_void) -> *mut ISteamClient,

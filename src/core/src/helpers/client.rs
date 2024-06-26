@@ -16,10 +16,10 @@ fn load_steam_client() -> Result<Library, error::Error> {
 
 pub fn load() -> Result<bool, error::Error> {
     let lib = load_steam_client()?;
-    println!("[lib] {:?}", lib);
+    dbg!(&lib);
 
     let steam_client = i_steam_client_018::init(&lib);
-    println!("[steam_client] {:?}", steam_client);
+    dbg!(&steam_client);
 
     Ok(true)
 }

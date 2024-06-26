@@ -10,7 +10,7 @@ pub fn init() -> Result<bool, error::Error> {
     }
 
     let client = client::load()?;
-    println!("[client] {:?}", client);
+    dbg!(client);
 
     if !client {
         return Err(error::Error::ClientNotInitialized);
