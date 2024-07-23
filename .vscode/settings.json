@@ -3,6 +3,6 @@
     "editor.tabSize": 4
   },
   "rust-analyzer.linkedProjects": [
-    "./src/core/Cargo.toml"
+    "E:/projects/eoussama/samrr/src/core/Cargo.toml" 
   ]
 }
