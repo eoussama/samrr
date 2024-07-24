@@ -7,7 +7,7 @@ use crate::wrappers::i_steam_client_018;
 
 fn load_steam_client() -> Result<Library, error::Error> {
     let lib_path = steam::get_path()?;
-    let lib_name = "steamclient64.dll";
+    let lib_name = "steamclient.dll";
 
     let lib = library::load(lib_path, lib_name);
 
